@@ -4,10 +4,23 @@ async function closeWithMessage(type, data) {
     `<!doctype html><meta charset="utf-8">
      <script>
        (function() {
-         window.opener && window.opener.postMessage(
-           { type: "authorization:github:${type}", data: ${payload} }, "*"
-         );
-         window.close();
+         if (window.opener) {
+           // ポップアップウィンドウの場合
+           window.opener.postMessage(
+             { type: "authorization:github:${type}", data: ${payload} }, "*"
+           );
+           window.close();
+         } else {
+           // 直接アクセスの場合、Netlify CMSの認証フローに合わせる
+           if ("${type}" === "success") {
+             const token = ${payload}.token;
+             // Netlify CMSが期待する形式でリダイレクト
+             window.location.href = "/admin/#access_token=" + token;
+           } else {
+             // エラーの場合
+             window.location.href = "/admin/#error=" + encodeURIComponent(${payload}.message);
+           }
+         }
        })();
      </script>`,
     { headers: { "Content-Type": "text/html; charset=utf-8" } }
