@@ -2,7 +2,6 @@ export async function onRequestGet({ env, request }) {
   const url = new URL(request.url);
   const state = crypto.randomUUID();
 
-  // 参照元チェック用（任意）：?origin=https://pr0p0se.com/stg みたいに渡せる
   const origin = url.searchParams.get("origin") || "";
 
   const redirect = new URL("https://github.com/login/oauth/authorize");
