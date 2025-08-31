@@ -2,7 +2,6 @@ export async function onRequestGet({ env, request }) {
   const url = new URL(request.url);
   const origin = url.searchParams.get("origin") || "";
 
-  // 任意：戻り先をCookieに保存（なくても動く）
   const headers = new Headers({
     "Set-Cookie": `oauth_origin=${encodeURIComponent(origin)}; Path=/; Max-Age=600; Secure; SameSite=Lax`,
   });
