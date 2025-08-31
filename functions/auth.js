@@ -1,4 +1,3 @@
-// functions/auth.js
 export async function onRequestGet({ env, request }) {
   const url = new URL(request.url);
   const origin = url.searchParams.get("origin") || "";
