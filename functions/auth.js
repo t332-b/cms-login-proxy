@@ -1,3 +1,30 @@
+// functions/auth.js
+export async function onRequestGet({ env, request }) {
+  const url = new URL(request.url);
+  const origin = url.searchParams.get("origin") || ""; // Decapが付けてくる
+
+  // （任意）戻り先のヒントとしてCookie保存
+  const headers = new Headers({
+    "Set-Cookie": `oauth_origin=${encodeURIComponent(origin)}; Path=/; Max-Age=600; Secure; SameSite=Lax`,
+  });
+
+  const params = new URLSearchParams({
+    client_id: env.CLIENT_ID,
+    scope: "repo,user:email",            // private repo なら repo 必須
+    redirect_uri: env.REDIRECT_URI,      // 例: https://pr0p0se-cms.pages.dev/callback
+    state: crypto.randomUUID(),
+    allow_signup: "true",
+  });
+
+  return new Response(null, {
+    status: 302,
+    headers: new Headers([...headers, ["Location", "https://github.com/login/oauth/authorize?" + params.toString()]])
+  });
+}
+  
+
+
+/*
 export async function onRequestGet({ env, request }) {
   const url = new URL(request.url);
   const state = crypto.randomUUID();
@@ -18,3 +45,4 @@ export async function onRequestGet({ env, request }) {
 
   return new Response(null, { status: 302, headers });
 }
+*/
