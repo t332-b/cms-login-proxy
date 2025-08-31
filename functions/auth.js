@@ -2,7 +2,6 @@ export async function onRequestGet({ env, request }) {
   const url = new URL(request.url);
   const origin = url.searchParams.get("origin") || "";
 
-  // 任意：戻り先をCookieに保存（なくても動く）
   const headers = new Headers({
     "Set-Cookie": `oauth_origin=${encodeURIComponent(origin)}; Path=/; Max-Age=600; Secure; SameSite=Lax`,
   });
@@ -10,7 +9,7 @@ export async function onRequestGet({ env, request }) {
   const params = new URLSearchParams({
     client_id: env.CLIENT_ID,
     scope: "repo,user:email",
-    redirect_uri: env.REDIRECT_URI, // 例: https://cms-login-proxy.pages.dev/callback
+    redirect_uri: env.REDIRECT_URI, // https://cms-login-proxy.pages.dev/callback
     state: crypto.randomUUID(),
     allow_signup: "true",
   });
