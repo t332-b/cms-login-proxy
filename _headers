@@ -1,0 +1,10 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/auth
+  Access-Control-Allow-Origin: *
+
+/callback
+  Access-Control-Allow-Origin: *
